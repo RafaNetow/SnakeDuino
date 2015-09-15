@@ -4,13 +4,15 @@
 
 
 
-
+//Size Margins
 
 
 int width = VGA.getHSize();
 
 int height = VGA.getVSize();
+
 const int mapwidth = width;
+
 const int mapheight = height;
 
 void drawMargins(){
@@ -29,8 +31,7 @@ void drawMargins(){
     
 
 unsigned char Food[] = {
- RED,RED,
- RED,RED
+ RED 
 };
 unsigned char Snake[]={
 GREEN
@@ -58,12 +59,15 @@ struct Sprite{
 };
 
 
-
+//Sprites
   struct Sprite snake;
+  
   struct Sprite food;
+
  void putRandomFood()
  {
-VGA.clearArea( food.posX, food.posY, 1, 1 );
+
+   VGA.clearArea( food.posX, food.posY, 1, 1 );
 
     food.posX = rand() % 156 + 2;
 
@@ -75,17 +79,29 @@ VGA.clearArea( food.posX, food.posY, 1, 1 );
 
  }
  void InitialFoodPosition(){
-     food.posX=100;
+     
+   food.posX=100;
+     
      food.posY=38;
+     
      food.image = Food;
-     food.width = 2;
-     food.height = 2;
+    
+     food.width = 1;
+    
+     food.height = 1;
+    
+     food.direction = -1;
+     
      VGA.writeArea( food.posX, food.posY, 1, 1, Food ); 
+     
+     
  
  }
  
  void drawFood(){
-       VGA.writeArea(food.posX,food.posY,1,1,Food);
+      
+   VGA.writeArea(food.posX,food.posY,1,1,Food);
+ 
  }
 
  
@@ -121,7 +137,9 @@ void setup(){
   Serial.begin(9600);
   
   InitSnakePosition();
+  
   InitialFoodPosition();
+  
   VGA.setBackgroundColor(WHITE);
 
     
@@ -198,7 +216,7 @@ const int posX = someSprite->posX;
 const int posY = someSprite->posY;
 const int width = someSprite->width;
 const int height = someSprite->height;
-  VGA.clearArea( posX, posY, width,height );
+  VGA.clear();
 
    if(someSprite->direction==0){
      someSprite->posX = someSprite->posX-cont;
@@ -220,7 +238,7 @@ const int height = someSprite->height;
 
 }
 
-
+/*
 bool verifyIfNextPixelIsDifrentColor(struct Sprite*head){
     typedef unsigned char pixel_t; 
     pixel_t typeOfColor[4];
@@ -243,4 +261,4 @@ bool verifyIfColissionWithObstacule(struct Sprite spriteToVerify, unsigned char*
 	}
   return false;
 }
-
+*/
