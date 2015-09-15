@@ -7,6 +7,7 @@
 //Size Margins
 
 
+
 int width = VGA.getHSize();
 
 int height = VGA.getVSize();
@@ -15,9 +16,26 @@ const int mapwidth = width;
 
 const int mapheight = height;
 
+
+
+//Collider
+struct Rectangle {
+		unsigned int x1, y1, x2, y2;
+};
+
+#define PointInRectangle(x, y, x1, y1, x2, y2)		((( (x) >= (x1)) && ((y) >= (y1))) && (((x) <= (x2)) && ((y) <= (y2))))
+int Collide(struct Rectangle *r1, struct Rectangle *r2)
+{
+	return (PointInRectangle(r1->x1, r1->y1, r2->x1, r2->y1, r2->x2, r2->y2) ||
+		PointInRectangle(r1->x2, r1->y2, r2->x1, r2->y1, r2->x2, r2->y2) ||
+		PointInRectangle(r1->x1, r1->y2, r2->x1, r2->y1, r2->x2, r2->y2) ||
+		PointInRectangle(r1->x2, r1->y1, r2->x1, r2->y1, r2->x2, r2->y2));
+}
+
 void drawMargins(){
 
-    VGA.setColor( BLACK );
+    VGA.setColor( GREEN );
+    
     VGA.drawRect( 1, 0, 1, mapheight );
 
     VGA.drawRect( mapwidth-2, 0, 1, mapheight );
@@ -153,13 +171,24 @@ void setup(){
 int cont = 1;
 int currentPixel;;
 char*buffers="";
-
+boolean marioSeLacome = false;
 void loop(){
           
  
  // itoa(RED,buffers,10);
   //VGA.printtext(100,38,buffers,true );  
- 
+  
+     Rectangle r3 ={food.posX,food.posY,(food.posX+food.width),(food.posY+food.height) };
+     Rectangle r4 ={snake.posX,snake.posY,(snake.posX+snake.width),(snake.posY+snake.height) };
+     delay(10);
+     int collide= Collide(&r3,&r4);
+     if(collide ==1)
+     {
+         marioSeLacome = true;
+     }
+     if(marioSeLacome)
+          VGA.printtext(0,20,"MSLC");  
+     
 
    drawMargins(); 
    drawFood();  
@@ -184,11 +213,9 @@ void loop(){
     if(snake.direction==3)
          drawWithDirection(cont,&snake);
     
-   if(verifyIfNextPixelIsDifrentColor(&snake))  {
-            void putRandomFood();
    
-      VGA.printtext(200,200,"Fin del juego" );    
-   }
+ 
+  
     
    if(snake.posX==0)
           VGA.printtext(200,200,"Fin del juego" );             
@@ -212,10 +239,7 @@ void drawWithDirection(int cont,struct Sprite*someSprite){
 
     //3 abajo
 
-const int posX = someSprite->posX;
-const int posY = someSprite->posY;
-const int width = someSprite->width;
-const int height = someSprite->height;
+
   VGA.clear();
 
    if(someSprite->direction==0){
