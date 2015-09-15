@@ -28,14 +28,14 @@ struct Sprite{
 
 };
 
-struct ScoreText{
+struct Text{
    int posX;
    
    int posY;
    
-   int socreNum;
+   int Num;
    
-   char* scoreText;
+   char* Text;
   
 
 };
@@ -54,7 +54,7 @@ GREEN
   
   struct Sprite food;
   
-  struct ScoreText score;
+  struct Text score;
    
 
 //Size Margins
@@ -95,6 +95,7 @@ int Collide(struct Rectangle *r1, struct Rectangle *r2)
  
  }
 
+
 void drawMargins(){
 
     VGA.setColor( GREEN );
@@ -109,33 +110,33 @@ void drawMargins(){
 
 }
 
+ 
  void putRandomFood()
  {
 
-   VGA.clearArea( food.posX, food.posY, 1, 1 );
+   VGA.clear();
 
     food.posX = rand() % 156 + 2;
 
     food.posY = rand() % 116 + 2;
 
-    VGA.writeArea( 100, 38, 1, 1, Food ); 
-
     
 
  }    
 
+ 
 
 
 // Funct To Inializer Objects
  
  void InitialScore(){
-    score.posX = 100;
+    score.posX = 0;
    
-     score.posY = 100;
+     score.posY = 0;
    
-     score.socreNum =0;
+     score.Num =0;
    
-     score.scoreText = "0";
+     score.Text = "0";
  
  
  }
@@ -162,7 +163,7 @@ void drawMargins(){
 
  {
 
-   snake.posX=100;
+   snake.posX=0;
 
    snake.posY=65;
 
@@ -212,7 +213,7 @@ char*buffers="";
 boolean ate = false;
 void loop(){
           
-     VGA.printtext(score.posX,score.posY,"Score: "score.scoreText);
+     VGA.printtext(score.posX,score.posY,score.Text);
  // itoa(RED,buffers,10);
   //VGA.printtext(100,38,buffers,true );  
   
@@ -222,10 +223,12 @@ void loop(){
      int collide= Collide(&r3,&r4);
      if(collide ==1)
      {
-         ate = true;
+       score.Num = score.Num+1;
+       itoa(score.Num,buffers,10);
+       score.Text = buffers;
+       putRandomFood();
      }
-     if(ate)
-          VGA.printtext(0,20,"MSLC");  
+  
      
 
    drawMargins(); 
