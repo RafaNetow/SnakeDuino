@@ -4,6 +4,59 @@
 
 
 
+
+
+
+//Object To Help
+
+  
+struct Sprite{
+
+  int posX;
+
+  int posY;
+
+  int width;
+
+  int height;
+  
+  int direction;
+
+  unsigned char *image;
+
+  
+
+};
+
+struct ScoreText{
+   int posX;
+   
+   int posY;
+   
+   int socreNum;
+   
+   char* scoreText;
+  
+
+};
+
+//Object of the Game
+  unsigned char Food[] = {
+ RED 
+};
+unsigned char Snake[]={
+GREEN
+ 
+};
+
+  
+  struct Sprite snake;
+  
+  struct Sprite food;
+  
+  struct ScoreText score;
+   
+
 //Size Margins
 
 
@@ -32,6 +85,16 @@ int Collide(struct Rectangle *r1, struct Rectangle *r2)
 		PointInRectangle(r1->x2, r1->y1, r2->x1, r2->y1, r2->x2, r2->y2));
 }
 
+
+//Drawing Sprites
+
+
+ void drawFood(){
+      
+   VGA.writeArea(food.posX,food.posY,1,1,Food);
+ 
+ }
+
 void drawMargins(){
 
     VGA.setColor( GREEN );
@@ -46,42 +109,6 @@ void drawMargins(){
 
 }
 
-    
-
-unsigned char Food[] = {
- RED 
-};
-unsigned char Snake[]={
-GREEN
-
-};
-
-
-
-struct Sprite{
-
-  int posX;
-
-  int posY;
-
-  int width;
-
-  int height;
-  
-  int direction;
-
-  unsigned char *image;
-
-  
-
-};
-
-
-//Sprites
-  struct Sprite snake;
-  
-  struct Sprite food;
-
  void putRandomFood()
  {
 
@@ -95,7 +122,24 @@ struct Sprite{
 
     
 
+ }    
+
+
+
+// Funct To Inializer Objects
+ 
+ void InitialScore(){
+    score.posX = 100;
+   
+     score.posY = 100;
+   
+     score.socreNum =0;
+   
+     score.scoreText = "0";
+ 
+ 
  }
+ 
  void InitialFoodPosition(){
      
    food.posX=100;
@@ -110,19 +154,9 @@ struct Sprite{
     
      food.direction = -1;
      
-     VGA.writeArea( food.posX, food.posY, 1, 1, Food ); 
-     
-     
+     VGA.writeArea( food.posX, food.posY, 1, 1, Food );     
  
  }
- 
- void drawFood(){
-      
-   VGA.writeArea(food.posX,food.posY,1,1,Food);
- 
- }
-
- 
  
  void InitSnakePosition()
 
@@ -142,10 +176,12 @@ struct Sprite{
 
  }
  
- void DrawCurrentPosFood(){
+
  
  
- }
+ 
+ 
+ 
 
 void setup(){
  
@@ -157,6 +193,8 @@ void setup(){
   InitSnakePosition();
   
   InitialFoodPosition();
+  
+  InitialScore();
   
   VGA.setBackgroundColor(WHITE);
 
@@ -171,10 +209,10 @@ void setup(){
 int cont = 1;
 int currentPixel;;
 char*buffers="";
-boolean marioSeLacome = false;
+boolean ate = false;
 void loop(){
           
- 
+     VGA.printtext(score.posX,score.posY,"Score: "score.scoreText);
  // itoa(RED,buffers,10);
   //VGA.printtext(100,38,buffers,true );  
   
@@ -184,9 +222,9 @@ void loop(){
      int collide= Collide(&r3,&r4);
      if(collide ==1)
      {
-         marioSeLacome = true;
+         ate = true;
      }
-     if(marioSeLacome)
+     if(ate)
           VGA.printtext(0,20,"MSLC");  
      
 
