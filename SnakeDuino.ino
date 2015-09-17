@@ -17,6 +17,7 @@ struct Sprite{
   int posY;
 
   int width;
+  
 
   int height;
   
@@ -141,6 +142,7 @@ void drawMargins(){
  
  }
  
+ 
  void InitialFoodPosition(){
      
    food.posX=100;
@@ -179,8 +181,13 @@ void drawMargins(){
  
 
  
- 
- 
+//Funct to Help
+/*
+boolean touchBound(struct Sprite someSprite){
+  if(someSprite.posX ==0 || someSprite.posY == 0 || someSprite.posX == mapwidth-4 || someSprite.posY == mapheight-4)
+      true;
+} 
+ */
  
  
 
@@ -253,14 +260,12 @@ void loop(){
           snake.direction = 3;
     if(snake.direction==3)
          drawWithDirection(cont,&snake);
+  if(
     
-   
- 
-  
-    
-   if(snake.posX==0)
-          VGA.printtext(200,200,"Fin del juego" );             
-       delay(100);        //VGA.printtext(0,20,"MSLC");    
+/*   if(touchBound(snake))          
+       VGA.printtext(200,200,"Fin del juego" );             
+       */
+       delay(50);        //VGA.printtext(0,20,"MSLC");    
 
     //   VGA.clearArea(100-cont,65,10,9);
 
@@ -281,7 +286,7 @@ void drawWithDirection(int cont,struct Sprite*someSprite){
     //3 abajo
 
 
-  VGA.clear();
+  
 
    if(someSprite->direction==0){
      someSprite->posX = someSprite->posX-cont;
@@ -303,27 +308,17 @@ void drawWithDirection(int cont,struct Sprite*someSprite){
 
 }
 
-/*
-bool verifyIfNextPixelIsDifrentColor(struct Sprite*head){
-    typedef unsigned char pixel_t; 
-    pixel_t typeOfColor[4];
+
+bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
+    typedef unsigned char pixel_t;
     
      //Toma los colors de la izquiera, derecha, arriba y abajo
-      typeOfColor[0] = VGA.getPixel(head->posX-1,head->posY);
-    typeOfColor[1] = VGA.getPixel(head->posX,head->posY+1);
-    typeOfColor[2] = VGA.getPixel(head->posX+1,head->posY);
-    typeOfColor[3] = VGA.getPixel(head->posX,head->posY-1);
+      pixel_t = VGA.getPixel(head->posX,head->posY);
+    
 	
-	return  verifyIfColissionWithObstacule(*head,typeOfColor);
+	return  pixel_t == true;
 
 }
 
-bool verifyIfColissionWithObstacule(struct Sprite spriteToVerify, unsigned char*nextsPixels ){
-	for(int pos=0; pos<4; pos++){
-		if(nextsPixels[pos] == 224 && spriteToVerify.direction== pos){
-			return true;
-		}
-	}
-  return false;
-}
-*/
+
+
