@@ -46,7 +46,7 @@ struct Text{
  RED 
 };
 unsigned char Snake[]={
-GREEN
+YELLOW
  
 };
 
@@ -165,7 +165,7 @@ void drawMargins(){
 
  {
 
-   snake.posX=0;
+   snake.posX=10;
 
    snake.posY=65;
 
@@ -260,11 +260,11 @@ void loop(){
           snake.direction = 3;
     if(snake.direction==3)
          drawWithDirection(cont,&snake);
-  if(
+
     
-/*   if(touchBound(snake))          
+  if(verifyIfNextPixelIsDiferenntColor(&snake))          
        VGA.printtext(200,200,"Fin del juego" );             
-       */
+
        delay(50);        //VGA.printtext(0,20,"MSLC");    
 
     //   VGA.clearArea(100-cont,65,10,9);
@@ -310,15 +310,43 @@ void drawWithDirection(int cont,struct Sprite*someSprite){
 
 
 bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
-    typedef unsigned char pixel_t;
+    int pixel_t;
     
      //Toma los colors de la izquiera, derecha, arriba y abajo
-      pixel_t = VGA.getPixel(head->posX,head->posY);
+      pixel_t = VGA.getPixel(head->posX+1,head->posY);
+      if(head->direction==0){
+           pixel_t = VGA.getPixel(head->posX+1,head->posY);
+            if(pixel_t == GREEN){
+             VGA.printtext(50,100,"Entre" );
+             return true;
+            }
+      if(head->direction==1){
+           pixel_t = VGA.getPixel(head->posX,head->posY-1);
+            if(pixel_t == GREEN){
+             VGA.printtext(50,100,"Entre" );
+              return true;  
+          }
+      	 }
+       if(head->direction==2){
+           pixel_t = VGA.getPixel(head->posX-1,head->posY);
+            if(pixel_t == GREEN){
+             VGA.printtext(50,100,"Entre" );
+              return true;  
+          }  	 
+    }
+      
+      if(head->direction==3){
+           pixel_t = VGA.getPixel(head->posX,head->posY+1);
+            if(pixel_t == GREEN) {
+             VGA.printtext(50,100,"Entre" );
+      	       return true;
+            }  
+  }
     
 	
-	return  pixel_t == true;
+	
 
 }
 
-
+}
 
