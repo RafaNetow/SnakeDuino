@@ -55,7 +55,7 @@ YELLOW
 };
 
   
-  struct Sprite snake;
+  struct Sprite snake[50];
   
   struct Sprite food;
   
@@ -169,17 +169,17 @@ void drawMargins(){
 
  {
 
-   snake.posX=10;
+   snake[0].posX=10;
 
-   snake.posY=65;
+   snake[0].posY=65;
 
-   snake.width =1;
+   snake[0].width =1;
 
-   snake.height=1;
+   snake[0].height=1;
 
-   snake.direction = 2;
+   snake[0].direction = 2;
    
-   snake.image = Snake;
+   snake[0].image = Snake;
 
  }
  
@@ -194,7 +194,7 @@ boolean touchBound(struct Sprite someSprite){
  */
  
  
-
+int currenSnakeSize = 0;
 void setup(){
  
 
@@ -229,7 +229,7 @@ void loop(){
   //VGA.printtext(100,38,buffers,true );  
   
      Rectangle r3 ={food.posX,food.posY,(food.posX+food.width),(food.posY+food.height) };
-     Rectangle r4 ={snake.posX,snake.posY,(snake.posX+snake.width),(snake.posY+snake.height) };
+     Rectangle r4 ={snake[0].posX,snake[0].posY,(snake[0].posX+snake[0].width),(snake[0].posY+snake[0].height) };
      delay(10);
      int collide= Collide(&r3,&r4);
      if(collide ==1)
@@ -246,27 +246,27 @@ void loop(){
    drawFood();  
 
   if(digitalRead(FPGA_BTN_0))
-         snake.direction = 0;
-   if(snake.direction==0)
-        drawWithDirection(cont,&snake);
+         snake[0].direction = 0;
+   if(snake[0].direction==0)
+        drawWithDirection(cont,&snake[0]);
 
   if(digitalRead(FPGA_BTN_1))
-          snake.direction= 1;
-   if(snake.direction==1)
-       drawWithDirection(cont,&snake);
+          snake[0].direction= 1;
+   if(snake[0].direction==1)
+       drawWithDirection(cont,&snake[0]);
 
   if(digitalRead(FPGA_BTN_2))
-          snake.direction = 2;
-   if(snake.direction==2) 
-       drawWithDirection(cont,&snake);
+          snake[0].direction = 2;
+   if(snake[0].direction==2) 
+       drawWithDirection(cont,&snake[0]);
 
   if(digitalRead(FPGA_BTN_3))
-          snake.direction = 3;
-    if(snake.direction==3)
-         drawWithDirection(cont,&snake);
+          snake[0].direction = 3;
+    if(snake[0].direction==3)
+         drawWithDirection(cont,&snake[0]);
 
     
-  if(verifyIfNextPixelIsDiferenntColor(&snake))          
+  if(verifyIfNextPixelIsDiferenntColor(&snake[0]))          
        VGA.printtext(200,200,"Fin del juego" );             
 
        delay(50);        //VGA.printtext(0,20,"MSLC");    
@@ -279,8 +279,9 @@ void loop(){
 
 
 //push
+int currentSnakeSize = 0;
 void saveSnakepos(){
-   for(int i = 0; i<currentSnakeSize-1; i++){
+   for(int i = 0; i<50-1; i++){
      snake[i+1].nextx = snake[i].posX;
      snake[i+1].nexty = snake[i].posY;
 	
@@ -291,7 +292,7 @@ void saveSnakepos(){
 }
 
 void moveSnake(){
-   for(int i = 1; i<currentSnakeSize-1; i++){
+   for(int i = 1; i<50; i++){
      snake[i].posX = snake[i].nextx;
      snake[i].posY = snake[i].nexty;
 	
@@ -343,7 +344,7 @@ bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
      //Toma los colors de la izquiera, derecha, arriba y abajo
       pixel_t = VGA.getPixel(head->posX+1,head->posY);
       if(head->direction==0){
-           pixel_t = VGA.getPixel(head->posX+1,head->posY);
+           pixel_t = VGA.getPixel(head->posX-1,head->posY);
             if(pixel_t == GREEN){
              VGA.printtext(50,100,"Entre" );
              return true;
@@ -356,7 +357,7 @@ bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
           }
       	 }
        if(head->direction==2){
-           pixel_t = VGA.getPixel(head->posX-1,head->posY);
+           pixel_t = VGA.getPixel(head->posX+1,head->posY);
             if(pixel_t == GREEN){
              VGA.printtext(50,100,"Entre" );
               return true;  
