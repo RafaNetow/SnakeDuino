@@ -169,7 +169,7 @@ void drawMargins(){
 
  {
 
-   snake[0].posX=10;
+   snake[0].posX=65;
 
    snake[0].posY=65;
 
@@ -180,6 +180,16 @@ void drawMargins(){
    snake[0].direction = 2;
    
    snake[0].image = Snake;
+ 
+   for(int i =1; i<50; i++)
+   {
+       snake[i].image = BLACK;
+       snake[i].posX=65-i;
+       snake[i].posY=65;
+       snake[i].width =1;
+       snake[i].height=1;
+       snake[i].direction = 2;       
+   }
 
  }
  
@@ -302,7 +312,14 @@ void moveSnake(){
    
 }
 
+  void drawSnake()
+{
+    for(int i = 0; i<=currentSnakeSize; i++){
+         VGA.writeArea(snake[i].posX,snake[i].posY,snake[i].width,snake[i].height,snake[i].image);   }
   
+
+  
+  }
 
 void drawWithDirection(int cont,struct Sprite*someSprite){
 
@@ -318,20 +335,29 @@ void drawWithDirection(int cont,struct Sprite*someSprite){
   
 
    if(someSprite->direction==0){
+     saveSnakepos();
      someSprite->posX = someSprite->posX-cont;
-     VGA.writeArea(someSprite->posX,someSprite->posY,someSprite->width,someSprite->height,someSprite->image);
+     //Mira aca necesitamos llamar la funcion que dibuje toda la snake
+    moveSnake()
+     drawSnake();
    }
    if(someSprite->direction==1){
+     saveSnakepos();
      someSprite->posY = someSprite->posY-cont;
-     VGA.writeArea(someSprite->posX,someSprite->posY,someSprite->width,someSprite->height,someSprite->image);
+     moveSnake()
+     drawSnake();
    }
    if(someSprite->direction==2){
-      someSprite->posX = someSprite->posX+cont;
-     VGA.writeArea(someSprite->posX,someSprite->posY,someSprite->width,someSprite->height,someSprite->image);
+     saveSnakepos(); 
+     someSprite->posX = someSprite->posX+cont;
+      moveSnake()
+      drawSnake();
    }
    if(someSprite->direction==3){
+     saveSnakepos();
      someSprite->posY = someSprite->posY+cont;
-     VGA.writeArea(someSprite->posX,someSprite->posY,someSprite->width,someSprite->height  ,someSprite->image);  
+     moveSnake()
+     drawSnake(); 
    }
      
 
