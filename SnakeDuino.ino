@@ -16,6 +16,10 @@ struct Sprite{
 
   int posY;
 
+  int nextx;
+
+  int nexty;
+
   int width;
   
 
@@ -271,6 +275,30 @@ void loop(){
 
        
 
+}
+
+
+//push
+void saveSnakepos(){
+   for(int i = 0; i<currentSnakeSize-1; i++){
+     snake[i+1].nextx = snake[i].posX;
+     snake[i+1].nexty = snake[i].posY;
+	
+   }
+   
+//   VGA.writeArea(snake[currentSnakeSize].posX,snake[currentSnakeSize].posY,1,1,BLACK);
+   
+}
+
+void moveSnake(){
+   for(int i = 1; i<currentSnakeSize-1; i++){
+     snake[i].posX = snake[i].nextx;
+     snake[i].posY = snake[i].nexty;
+	
+   }
+   
+//   VGA.writeArea(snake[currentSnakeSize].posX,snake[currentSnakeSize].posY,1,1,BLACK);
+   
 }
 
   
