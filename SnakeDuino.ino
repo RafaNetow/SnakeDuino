@@ -57,9 +57,15 @@ YELLOW
   
   struct Sprite snake[50];
   
+  struct Sprite powerups[8];
+
+  struct sprite powerupcolor[4]; 
+
   struct Sprite food;
   
   struct Text score;
+
+  int timer:
    
 
 //Size Margins
@@ -116,10 +122,48 @@ void drawMargins(){
 }
 
  
- void putRandomFood()
+ 
+void initpowerups()
+{
+	powerupcolor[0].image = PURPLE;
+	powerupcolor[1].image = BLUE;
+	powerupcolor[2].image = RED;
+	powerupcolor[3].image = WHITE;
+	powerupcolor[4].image = ORANGE;
+
+	for(int i =0; i<2; i++)
+	{
+		int p rand() % 4 + 0;
+		powerup[i].image = powerupcolor[p].image;
+	}
+}
+
+void timer()
+{
+	if(timer < 60)
+	{
+		time++;
+	}else if(timer >= 60)
+		timer = 0l;
+}
+
+void verifypowerup()
+{
+	switch 
+		case: PURPLE
+		case:BLUE
+		case:RED
+		case:WHITE
+		case:ORANGE
+}
+
+void putRandomFood()
  {
 
    VGA.clear();
+
+
+        
 
     food.posX = rand() % 156 + 2;
 
