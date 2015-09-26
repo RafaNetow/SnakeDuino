@@ -10,6 +10,7 @@
 //Object To Help
 int scores[] = {0,0,0,0,0,0,0,0,0,0};
 char*buffers="";  
+char*bufferScore="";
 
 void orderscore()
 {
@@ -146,7 +147,9 @@ void initsnakeMenu(){
  unsigned char colorWhite[]={
    WHITE
  };
-
+ unsigned char colorGreen[]={
+   GREEN
+ };
 
 unsigned char Snake[]={
 YELLOW
@@ -282,6 +285,8 @@ void verifypowerup(int color)
 		
 		case PURPLE :
                 growSnake();
+                score.Num = score.Num+1;;
+    	        itoa(score.Num,buffers,10);
                 powerActivate=true;
 			timer = 0;
 		for(int i =3; i<8; i++)
@@ -294,20 +299,22 @@ void verifypowerup(int color)
 		
 		case BLUE:
                         growSnake();
-			score.Num = score.Num+2;
+			score.Num = score.Num+2;;
     			itoa(score.Num,buffers,10);
-       		score.Text = buffers;
+       		       score.Text = bufferScore;
 			break;
 		
 		case RED:
                         growSnake();
-			score.Num = score.Num+1;
+			score.Num = score.Num+1;;
     			itoa(score.Num,buffers,10);
-       		score.Text = buffers;
+    			
 		break;
 		
 		case WHITE:
                         growSnake();
+                        score.Num = score.Num+1;;
+    			itoa(score.Num,buffers,10);
                           if(powerActivate)
 			{
 				for(int i =0; i<8; i++)
@@ -332,21 +339,7 @@ void verifypowerup(int color)
 	
 }
 
-void putRandomFood()
- {
-
-   VGA.clear();
-
-
-        
-
-    food.posX = rand() % 156 + 2;
-
-    food.posY = rand() % 116 + 2;
-
-    
-
- }    
+   
 
  
 
@@ -354,9 +347,9 @@ void putRandomFood()
 // Funct To Inializer Objects
  
  void InitialScore(){
-    score.posX = 0;
+    score.posX = 2;
    
-     score.posY = 0;
+     score.posY = 2;
    
      score.Num =0;
    
@@ -366,23 +359,6 @@ void putRandomFood()
  }
  
  
- void InitialFoodPosition(){
-     
-   food.posX=100;
-     
-     food.posY=38;
-     
-     food.image = colorRed;
-    
-     food.width = 1;
-    
-     food.height = 1;
-    
-     food.direction = -1;
-     
-     VGA.writeArea( food.posX, food.posY, 1, 1, colorRed );     
- 
- }
  
  void InitSnakePosition()
 
@@ -430,7 +406,6 @@ void ifGameOverTrue(){
   
   InitSnakePosition();
   
-  InitialFoodPosition();
   
   InitialScore();
   
@@ -455,7 +430,7 @@ void setup(){
   
   InitSnakePosition();
   
-  InitialFoodPosition();
+
   
   InitialScore();
   
@@ -489,48 +464,37 @@ void loop(){
   
   if(beginGame){
     
-   
+   itoa(score.Num,bufferScore,10);
+   score.Text = bufferScore;
     
   VGA.printtext(score.posX,score.posY,score.Text);
- itoa(timer,buffers,10);
- VGA.printtext(100,38,buffers,true );  
+ 
   
      drawPowerUp();
      timerPowerUp();
-     Rectangle r3 ={food.posX,food.posY,(food.posX+food.width),(food.posY+food.height) };
-     Rectangle r4 ={snake[0].posX,snake[0].posY,(snake[0].posX+snake[0].width),(snake[0].posY+snake[0].height) };
-     delay(10);
-     int collide= Collide(&r3,&r4);
-     if(collide ==1)
-     {
-       score.Num = score.Num+1;
-       itoa(score.Num,buffers,10);
-       score.Text = buffers;
-       growSnake();
-       putRandomFood();
-     }
+    
   
      
 
    drawMargins(); 
    drawFood();  
 
-  if(digitalRead(FPGA_BTN_0))
+  if(digitalRead(FPGA_BTN_0) && snake[0].direction !=2)
          snake[0].direction = 0;
    if(snake[0].direction==0)
         drawWithDirection(cont,&snake[0]);
 
-  if(digitalRead(FPGA_BTN_1))
+  if(digitalRead(FPGA_BTN_1) && snake[0].direction !=3)
           snake[0].direction= 1;
    if(snake[0].direction==1)
        drawWithDirection(cont,&snake[0]);
 
-  if(digitalRead(FPGA_BTN_2))
+  if(digitalRead(FPGA_BTN_2)&&snake[0].direction !=0)
           snake[0].direction = 2;
    if(snake[0].direction==2) 
        drawWithDirection(cont,&snake[0]);
 
-  if(digitalRead(FPGA_BTN_3))
+  if(digitalRead(FPGA_BTN_3)&& snake[0].direction !=1)
           snake[0].direction = 3;
     if(snake[0].direction==3)
          drawWithDirection(cont,&snake[0]);
@@ -574,7 +538,7 @@ void moveSnake(){
 //   VGA.writeArea(snake[currentSnakeSize].posX,snake[currentSnakeSize].posY,1,1,BLACK);
    
 }
-
+  //asdasd
   void drawSnake()
 {
     for(int i = 0; i<=currentSnakeSize; i++){
@@ -609,7 +573,7 @@ void moveSnake(){
  
   void growSnake(){
     currentSnakeSize++;
-    snake[currentSnakeSize-1].image = Snake;
+    snake[currentSnakeSize-1].image = colorGreen;
   
   }
 void drawWithDirection(int cont,struct Sprite*someSprite){
@@ -665,7 +629,6 @@ bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
            pixel_t = VGA.getPixel(head->posX-1,head->posY);
             newpowerup(head->posX-1,head->posY);
             if(pixel_t == GREEN){
-            GameOver==true;
           ifGameOverTrue();
             }
             verifypowerup(pixel_t);
@@ -674,8 +637,7 @@ bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
            pixel_t = VGA.getPixel(head->posX,head->posY-1);
              newpowerup(head->posX,head->posY-1);
             if(pixel_t == GREEN){
-            GameOver==true;
-              ifGameOverTrue();;   
+              ifGameOverTrue(); 
           }
 		verifypowerup(pixel_t);
       	 }
@@ -683,7 +645,6 @@ bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
            pixel_t = VGA.getPixel(head->posX+1,head->posY);
                newpowerup(head->posX+1,head->posY);
             if(pixel_t == GREEN){
-            GameOver==true;
                  ifGameOverTrue();
           } 
 		verifypowerup(pixel_t); 	 
@@ -693,7 +654,6 @@ bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
            pixel_t = VGA.getPixel(head->posX,head->posY+1);
               newpowerup(head->posX,head->posY+1);
             if(pixel_t == GREEN) {
-             GameOver =true;
       	         ifGameOverTrue();
             } 
 			verifypowerup(pixel_t); 
