@@ -131,11 +131,22 @@ void initpowerups()
 	powerupcolor[3].image = WHITE;
 	powerupcolor[4].image = ORANGE;
 
-	for(int i =0; i<2; i++)
+	for(int i =0; i<3; i++)
 	{
-		int p rand() % 4 + 0;
+		int p rand() % 4 + 1;
 		powerup[i].image = powerupcolor[p].image;
+		powerup[i].posX = rand() % 156 + 2;
+		powerup[i].posY = rand() % 116 + 2;
+
 	}
+}
+
+void newpowerup()
+{
+	int p rand() % 4 + 1;
+	powerup[i].image = powerupcolor[p].image;
+	powerup[i].posX = rand() % 156 + 2;
+	powerup[i].posY = rand() % 116 + 2;
 }
 
 void timer()
@@ -147,14 +158,36 @@ void timer()
 		timer = 0l;
 }
 
-void verifypowerup()
+void verifypowerup(color)
 {
-	switch 
-		case: PURPLE
-		case:BLUE
-		case:RED
-		case:WHITE
-		case:ORANGE
+	switch(color)
+		
+		case: PURPLE:
+		for(int i =5; i<8; i++)
+		{
+			powerup[i].image = BLUE;
+			powerup[i].posX = rand() % 156 + 2;
+			powerup[i].posY = rand() % 116 + 2;
+		}
+		break;
+		
+		case:BLUE:
+		score.Num = score.Num+2;
+    		itoa(score.Num,buffers,10);
+       	score.Text = buffers;
+		break;
+		
+		case:RED:
+		score.Num = score.Num+1;
+    		itoa(score.Num,buffers,10);
+       	score.Text = buffers;
+		break;
+		
+		case:WHITE:
+		break;
+		
+		case:ORANGE:
+		break;
 }
 
 void putRandomFood()
