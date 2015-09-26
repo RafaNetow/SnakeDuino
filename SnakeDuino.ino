@@ -183,7 +183,7 @@ void timerPowerUp()
 {
 	if(timer < 100 && powerActivate)
 	{
-		timer = timer+1;
+		timer ++;
 	}else if(timer >= 100){
 			timer = 0;
                 powerActivate = false;
@@ -235,7 +235,7 @@ void verifypowerup(int color)
 			{
 				for(int i =0; i<3; i++)
 				{
-					powerups[i].image = colorRed;
+					powerups[i].image = colorBlue;
 					powerups[i].posX = rand() % 156 + 2;
 					powerups[i].posY = rand() % 116 + 2;
 				}
