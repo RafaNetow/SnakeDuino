@@ -45,6 +45,49 @@ struct Text{
 
 };
 
+int score[] = {0,0,0,0,0,0,0,0,0,0};
+
+void orderscore()
+{
+	for(int i =0; i<9; i++)
+	{
+		for(int p=i; i<9; i++)
+		{
+			if(score[i]<score[p])
+			{
+				int temp = score[i];
+				score[i] = score[p];
+				score[p] = temp;
+			}
+		}
+	}
+}
+
+void insertscore(int nscore)
+{
+	for(int i =0; i<9; i++)
+	{
+		if(nscore > score[i])
+		{
+			score[i] = nscore;
+		}
+	}
+}
+
+void printscores()
+{
+	VGA.setColor(GREEN);
+      VGA.printtext(50,2,"HighScore");
+      for(int i =0; i<10; i++){
+        
+        VGA.setColor(RED);
+        itoa(score;[i],buffers,10);
+ 	   VGA.printtext(100,38,buffers,true );  
+      }
+}
+
+
+
 //Object of the Game
   unsigned char colorRed[] = {
  RED 
@@ -139,6 +182,7 @@ void drawMargins(){
  
 void initpowerups()
 {
+	
 	powerupcolor[0].image = colorPurple;
 	powerupcolor[1].image = colorBlue;
 	powerupcolor[2].image = colorRed;
@@ -180,12 +224,13 @@ void newpowerup(int x, int y)
 boolean powerActivate = false;
 void timerPowerUp()
 {
-	if(timer < 1000000 && powerActivate)
+	if(timer < 100 && powerActivate)
 	{
-		timer++;
-	}else if(timer >= 1000000)
-		timer = 0;
+		timer ++;
+	}else if(timer >= 100){
+			timer = 0;
                 powerActivate = false;
+	}
 }
 
 void verifypowerup(int color)
@@ -195,6 +240,7 @@ void verifypowerup(int color)
 		case PURPLE :
                 growSnake();
                 powerActivate=true;
+			timer = 0;
 		for(int i =3; i<8; i++)
 		{
 			powerups[i].image = colorRed;
@@ -232,7 +278,7 @@ void verifypowerup(int color)
 			{
 				for(int i =0; i<3; i++)
 				{
-					powerups[i].image = colorRed;
+					powerups[i].image = colorBlue;
 					powerups[i].posX = rand() % 156 + 2;
 					powerups[i].posY = rand() % 116 + 2;
 				}
