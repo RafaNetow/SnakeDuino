@@ -9,7 +9,7 @@
 
 //Object To Help
 
-  
+char*buffers="";  
 struct Sprite{
 
   int posX;
@@ -46,9 +46,22 @@ struct Text{
 };
 
 //Object of the Game
-  unsigned char Food[] = {
+  unsigned char colorRed[] = {
  RED 
 };
+ unsigned char colorPurple[]={
+  PURPLE
+ };
+ 
+ unsigned char colorBlue []={
+   BLUE
+ };
+ 
+ unsigned char colorWhite[]={
+   WHITE
+ };
+
+
 unsigned char Snake[]={
 YELLOW
  
@@ -59,13 +72,13 @@ YELLOW
   
   struct Sprite powerups[8];
 
-  struct sprite powerupcolor[4]; 
+  struct Sprite powerupcolor[4]; 
 
   struct Sprite food;
   
   struct Text score;
 
-  int timer:
+  int timer;
    
 
 //Size Margins
@@ -102,7 +115,7 @@ int Collide(struct Rectangle *r1, struct Rectangle *r2)
 
  void drawFood(){
       
-   VGA.writeArea(food.posX,food.posY,1,1,Food);
+   VGA.writeArea(food.posX,food.posY,1,1,colorRed);
  
  }
 
@@ -125,69 +138,71 @@ void drawMargins(){
  
 void initpowerups()
 {
-	powerupcolor[0].image = PURPLE;
-	powerupcolor[1].image = BLUE;
-	powerupcolor[2].image = RED;
-	powerupcolor[3].image = WHITE;
-	powerupcolor[4].image = ORANGE;
+	powerupcolor[0].image = colorPurple;
+	powerupcolor[1].image = colorBlue;
+	powerupcolor[2].image = colorRed;
+	powerupcolor[3].image = colorWhite;
+	powerupcolor[4].image = colorRed;
 
 	for(int i =0; i<3; i++)
 	{
-		int p rand() % 4 + 1;
-		powerup[i].image = powerupcolor[p].image;
-		powerup[i].posX = rand() % 156 + 2;
-		powerup[i].posY = rand() % 116 + 2;
+		int p = rand() % 4 + 1;
+		powerups[i].image = powerupcolor[p].image;
+		powerups[i].posX = rand() % 156 + 2;
+		powerups[i].posY = rand() % 116 + 2;
 
 	}
 }
 
 void newpowerup()
 {
-	int p rand() % 4 + 1;
-	powerup[i].image = powerupcolor[p].image;
-	powerup[i].posX = rand() % 156 + 2;
-	powerup[i].posY = rand() % 116 + 2;
+	for(int i =0; i<3; i++)
+	{
+		int p = rand() % 4 + 1;
+		powerups[i].image = powerupcolor[p].image;
+		powerups[i].posX = rand() % 156 + 2;
+		powerups[i].posY = rand() % 116 + 2;
+
+	}
 }
 
-void timer()
+void timerPowerUp()
 {
 	if(timer < 60)
 	{
-		time++;
+		timer++;
 	}else if(timer >= 60)
 		timer = 0l;
 }
 
-void verifypowerup(color)
+void verifypowerup(int color)
 {
-	switch(color)
+	switch(color){
 		
-		case: PURPLE:
+		case PURPLE :
 		for(int i =5; i<8; i++)
 		{
-			powerup[i].image = BLUE;
-			powerup[i].posX = rand() % 156 + 2;
-			powerup[i].posY = rand() % 116 + 2;
+			powerups[i].image = colorBlue;
+			powerups[i].posX = rand() % 156 + 2;
+			powerups[i].posY = rand() % 116 + 2;
 		}
 		break;
 		
-		case:BLUE:
+		case BLUE:
 		score.Num = score.Num+2;
     		itoa(score.Num,buffers,10);
        	score.Text = buffers;
 		break;
 		
-		case:RED:
+		case RED:
 		score.Num = score.Num+1;
     		itoa(score.Num,buffers,10);
        	score.Text = buffers;
 		break;
 		
-		case:WHITE:
-		break;
-		
-		case:ORANGE:
-		break;
+		case WHITE:
+		break;}	
+	
 }
 
 void putRandomFood()
@@ -230,7 +245,7 @@ void putRandomFood()
      
      food.posY=38;
      
-     food.image = Food;
+     food.image = colorRed;
     
      food.width = 1;
     
@@ -238,7 +253,7 @@ void putRandomFood()
     
      food.direction = -1;
      
-     VGA.writeArea( food.posX, food.posY, 1, 1, Food );     
+     VGA.writeArea( food.posX, food.posY, 1, 1, colorRed );     
  
  }
  
@@ -260,7 +275,7 @@ void putRandomFood()
  
    for(int i =1; i<50; i++)
    {
-       snake[i].image = BLACK;
+       snake[i].image = Null;
        snake[i].posX=65-i;
        snake[i].posY=65;
        snake[i].width =1;
@@ -307,7 +322,7 @@ void setup(){
 
 int cont = 1;
 int currentPixel;;
-char*buffers="";
+
 boolean ate = false;
 void loop(){
           
@@ -324,6 +339,7 @@ void loop(){
        score.Num = score.Num+1;
        itoa(score.Num,buffers,10);
        score.Text = buffers;
+       growSnake();
        putRandomFood();
      }
   
@@ -366,7 +382,7 @@ void loop(){
 
 
 //push
-int currentSnakeSize = 0;
+int currentSnakeSize = 1;
 void saveSnakepos(){
    for(int i = 0; i<50-1; i++){
      snake[i+1].nextx = snake[i].posX;
@@ -392,12 +408,15 @@ void moveSnake(){
   void drawSnake()
 {
     for(int i = 0; i<=currentSnakeSize; i++){
-         VGA.writeArea(snake[i].posX,snake[i].posY,snake[i].width,snake[i].height,snake[i].image);   }
-  
+      VGA.writeArea(snake[i].posX,snake[i].posY,snake[i].width,snake[i].height,snake[i].image);   
+  }
+}
 
+  void growSnake(){
+    currentSnakeSize++;
+    snake[currentSnakeSize-1].image = Snake;
   
   }
-
 void drawWithDirection(int cont,struct Sprite*someSprite){
 
     //0 derecha  
@@ -415,25 +434,26 @@ void drawWithDirection(int cont,struct Sprite*someSprite){
      saveSnakepos();
      someSprite->posX = someSprite->posX-cont;
      //Mira aca necesitamos llamar la funcion que dibuje toda la snake
-    moveSnake()
+     moveSnake();
      drawSnake();
    }
    if(someSprite->direction==1){
      saveSnakepos();
      someSprite->posY = someSprite->posY-cont;
-     moveSnake()
+     moveSnake();
      drawSnake();
    }
    if(someSprite->direction==2){
      saveSnakepos(); 
      someSprite->posX = someSprite->posX+cont;
-      moveSnake()
+      moveSnake();
       drawSnake();
+     
    }
    if(someSprite->direction==3){
      saveSnakepos();
      someSprite->posY = someSprite->posY+cont;
-     moveSnake()
+     moveSnake();
      drawSnake(); 
    }
      
