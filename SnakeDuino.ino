@@ -60,6 +60,23 @@ struct Text{
  unsigned char colorWhite[]={
    WHITE
  };
+unsigned char snakeMenuPicture[]={
+WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,
+WHITE,WHITE,WHITE,BLACK,GREEN,GREEN,GREEN,GREEN,GREEN,BLACK,WHITE,WHITE,WHITE,WHITE,WHITE,
+WHITE,WHITE,WHITE,BLACK,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,BLACK,WHITE,WHITE,WHITE,WHITE,
+WHITE,WHITE,BLACK,GREEN,BLACK,GREEN,GREEN,GREEN,BLACK,GREEN,BLACK,WHITE,WHITE,WHITE,WHITE,
+WHITE,WHITE,BLACK,GREEN,BLACK,GREEN,GREEN,GREEN,BLACK,GREEN,GREEN,BLACK,WHITE,WHITE,WHITE,
+WHITE,WHITE,BLACK,RED,GREEN,GREEN,GREEN,GREEN,GREEN,RED,GREEN,BLACK,WHITE,WHITE,WHITE,
+WHITE,WHITE,WHITE,BLACK,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,BLACK,WHITE,WHITE,WHITE,WHITE,
+WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,
+WHITE,WHITE,BLACK,BLACK,GREEN,GREEN,BLACK,GREEN,GREEN,GREEN,BLACK,BLACK,WHITE,WHITE,WHITE,
+WHITE,BLACK,GREEN,GREEN,GREEN,BLACK,GREEN,GREEN,GREEN,GREEN,BLACK,GREEN,BLACK,WHITE,WHITE,
+BLACK,GREEN,GREEN,BLACK,GREEN,GREEN,GREEN,GREEN,GREEN,BLACK,GREEN,GREEN,GREEN,BLACK,WHITE,
+BLACK,GREEN,GREEN,GREEN,BLACK,BLACK,BLACK,BLACK,BLACK,GREEN,GREEN,GREEN,BLACK,GREEN,BLACK,
+BLACK,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,BLACK,GREEN,BLACK,
+WHITE,BLACK,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,BLACK,BLACK,GREEN,BLACK,
+WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,BLACK,WHITE,    
+};
 
 
 unsigned char Snake[]={
@@ -77,9 +94,12 @@ YELLOW
   struct Sprite food;
   
   struct Text score;
+  
+  struct Sprite snakeMenu;
 
   int timer;
    
+ 
 
 //Size Margins
 
@@ -99,6 +119,12 @@ const int mapheight = height;
 struct Rectangle {
 		unsigned int x1, y1, x2, y2;
 };
+
+
+
+
+
+
 
 #define PointInRectangle(x, y, x1, y1, x2, y2)		((( (x) >= (x1)) && ((y) >= (y1))) && (((x) <= (x2)) && ((y) <= (y2))))
 int Collide(struct Rectangle *r1, struct Rectangle *r2)
@@ -135,6 +161,24 @@ void drawMargins(){
 }
 
  
+void initsnakeMenu(){
+  
+     food.posX=100;
+     
+     food.posY=38;
+     
+     food.image = snakeMenuPicture;
+    
+     food.width = 1;
+    
+     food.height = 1;
+    
+     food.direction = -1;
+     
+     VGA.writeArea( food.posX, food.posY, 16, 16, snakeMenuPicture );    
+
+
+}
  
 void initpowerups()
 {
@@ -242,7 +286,7 @@ void putRandomFood()
  
  void InitialFoodPosition(){
      
-   food.posX=100;
+     food.posX=100;
      
      food.posY=38;
      
@@ -296,7 +340,7 @@ boolean touchBound(struct Sprite someSprite){
 } 
  */
  
- 
+bool activateMenu = false;
 int currenSnakeSize = 0;
 void setup(){
  
@@ -312,11 +356,12 @@ void setup(){
   InitialScore();
   
   initpowerups();
+  
+
+  
   VGA.setBackgroundColor(WHITE);
 
-    
-
- 
+  
 
   
 
@@ -328,7 +373,9 @@ int currentPixel;;
 boolean ate = false;
 void loop(){
           
-     VGA.printtext(score.posX,score.posY,score.Text);
+      
+     if(activateMenu){
+    VGA.printtext(score.posX,score.posY,score.Text);
  // itoa(RED,buffers,10);
   //VGA.printtext(100,38,buffers,true );  
   
@@ -379,7 +426,8 @@ void loop(){
 
     //   VGA.clearArea(100-cont,65,10,9);
 
-       
+     }
+       initsnakeMenu();
 
 }
 
@@ -423,7 +471,11 @@ void moveSnake(){
        VGA.writeArea(powerups[i].posX,powerups[i].posY,1,1,powerups[i].image); 
     
     }  
-  } 
+  }
+ void drawMenu(){
+ 
+ 
+ } 
  
  
   void growSnake(){
