@@ -8,8 +8,23 @@
 
 
 //Object To Help
-
+int score[] = {0,0,0,0,0,0,0,0,0,0};
 char*buffers="";  
+
+void orderscore()
+{
+	for(int i =0; i<9; i++)
+	{		for(int p=i; i<9; i++)
+		{
+			if(score[i]<score[p])
+			{
+				int temp = score[i];
+				score[i] = score[p];
+				score[p] = temp;
+			}
+		}
+	}
+}
 struct Sprite{
 
   int posX;
@@ -61,25 +76,31 @@ BLACK,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,BLACK,GR
 WHITE,BLACK,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,GREEN,BLACK,BLACK,GREEN,BLACK,
 WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,BLACK,WHITE,    
 };
-
+ struct Sprite menu;
 void initsnakeMenu(){
-  
-    food.posX=100;
+
+    menu.posX=100;
    
-    food.posY=38;
+    menu.posY=38;
      
-     food.image = snakeMenuPicture;
+     menu.image = snakeMenuPicture;
    
-    food.width = 1;
+    menu.width = 1;
     
-     food.height = 1;
+     menu.height = 1;
    
-     food.direction = -1;
+     menu.direction = -1;
     
-     VGA.writeArea( food.posX, food.posY, 16, 16, snakeMenuPicture );    
+     VGA.writeArea( 30, 38, 15, 15, snakeMenuPicture );
+     VGA.setColor(GREEN);
+      VGA.printtext(30,10," SNAKEDUINO ");
+      //VGA.writeArea(40,20 ,80,21, Intro);
+      VGA.setBackgroundColor(BLACK);
+      VGA.setColor(WHITE);
+      VGA.printtext(60,45,"Start"); 
 
 
-+}
+}
 
 //Object of the Game
   unsigned char colorRed[] = {
@@ -372,7 +393,7 @@ boolean touchBound(struct Sprite someSprite){
 } 
  */
  
- 
+boolean beginGame = false;
 int currenSnakeSize = 0;
 void setup(){
  
@@ -403,8 +424,17 @@ int currentPixel;;
 
 boolean ate = false;
 void loop(){
-          
-     VGA.printtext(score.posX,score.posY,score.Text);
+     
+   if(digitalRead(FPGA_BTN_0)){
+      beginGame=true;
+     VGA.clear();
+   }
+  if(beginGame==false)  
+  initsnakeMenu();
+  
+  
+  if(beginGame){
+  VGA.printtext(score.posX,score.posY,score.Text);
  itoa(timer,buffers,10);
  VGA.printtext(100,38,buffers,true );  
   
@@ -459,7 +489,7 @@ void loop(){
 
     //   VGA.clearArea(100-cont,65,10,9);
 
-       
+  }      
 
 }
 
