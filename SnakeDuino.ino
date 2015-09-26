@@ -8,7 +8,7 @@
 
 
 //Object To Help
-int score[] = {0,0,0,0,0,0,0,0,0,0};
+int scores[] = {0,0,0,0,0,0,0,0,0,0};
 char*buffers="";  
 
 void orderscore()
@@ -16,14 +16,43 @@ void orderscore()
 	for(int i =0; i<9; i++)
 	{		for(int p=i; i<9; i++)
 		{
-			if(score[i]<score[p])
+			if(scores[i]<scores[p])
 			{
-				int temp = score[i];
-				score[i] = score[p];
-				score[p] = temp;
+				int temp = scores[i];
+				scores[i] = scores[p];
+				scores[p] = temp;
 			}
 		}
 	}
+}
+
+
+void insertscore(int nscore)
+{
+	for(int i =0; i<9; i++)
+	{
+		if(nscore > scores[i])
+		{
+			scores[i] = nscore;
+		}
+	}
+}
+boolean GameOver =false;
+
+
+
+
+
+void printscores()
+{
+	VGA.setColor(GREEN);
+       VGA.printtext(50,2,"HighScore");
+      for(int i =0; i<10; i++){
+        
+        VGA.setColor(PURPLE);
+        itoa(scores[i],buffers,10);
+ 	   VGA.printtext(100,38,buffers,true );  
+      }
 }
 struct Sprite{
 
@@ -395,11 +424,33 @@ boolean touchBound(struct Sprite someSprite){
  
 boolean beginGame = false;
 int currenSnakeSize = 0;
+
+void ifGameOverTrue(){
+  VGA.clear();
+  
+  InitSnakePosition();
+  
+  InitialFoodPosition();
+  
+  InitialScore();
+  
+  initpowerups();
+  VGA.printtext(50,50,"Game Over" );
+   delay(50000);
+  insertscore(score.Num);
+  void printscores();
+  
+   VGA.clear();
+  
+    delay(5000000);
+
+}
+
 void setup(){
  
 
   VGA.begin(VGAWISHBONESLOT(9),CHARMAPWISHBONESLOT(10));
-
+ GameOver= false;
   Serial.begin(9600);
   
   InitSnakePosition();
@@ -425,6 +476,9 @@ int currentPixel;;
 boolean ate = false;
 void loop(){
      
+  
+  
+  
    if(digitalRead(FPGA_BTN_0)){
       beginGame=true;
      VGA.clear();
@@ -434,6 +488,9 @@ void loop(){
   
   
   if(beginGame){
+    
+   
+    
   VGA.printtext(score.posX,score.posY,score.Text);
  itoa(timer,buffers,10);
  VGA.printtext(100,38,buffers,true );  
@@ -608,8 +665,8 @@ bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
            pixel_t = VGA.getPixel(head->posX-1,head->posY);
             newpowerup(head->posX-1,head->posY);
             if(pixel_t == GREEN){
-             VGA.printtext(50,100,"Game Over" );
-         
+            GameOver==true;
+          ifGameOverTrue();
             }
             verifypowerup(pixel_t);
 	}		
@@ -617,8 +674,8 @@ bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
            pixel_t = VGA.getPixel(head->posX,head->posY-1);
              newpowerup(head->posX,head->posY-1);
             if(pixel_t == GREEN){
-             VGA.printtext(50,100,"Game Over" );
-               
+            GameOver==true;
+              ifGameOverTrue();;   
           }
 		verifypowerup(pixel_t);
       	 }
@@ -626,8 +683,8 @@ bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
            pixel_t = VGA.getPixel(head->posX+1,head->posY);
                newpowerup(head->posX+1,head->posY);
             if(pixel_t == GREEN){
-             VGA.printtext(50,100,"Game Over" );
-               
+            GameOver==true;
+                 ifGameOverTrue();
           } 
 		verifypowerup(pixel_t); 	 
     }
@@ -636,8 +693,8 @@ bool verifyIfNextPixelIsDiferenntColor(struct Sprite*head){
            pixel_t = VGA.getPixel(head->posX,head->posY+1);
               newpowerup(head->posX,head->posY+1);
             if(pixel_t == GREEN) {
-             VGA.printtext(50,100,"Game Over" );
-      	      
+             GameOver =true;
+      	         ifGameOverTrue();
             } 
 			verifypowerup(pixel_t); 
   }
