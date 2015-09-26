@@ -151,6 +151,7 @@ void initpowerups()
 		powerups[i].posX = rand() % 156 + 2;
 		powerups[i].posY = rand() % 116 + 2;
 
+
 	}
 }
 
@@ -275,7 +276,7 @@ void putRandomFood()
  
    for(int i =1; i<50; i++)
    {
-       snake[i].image = Null;
+       snake[i].image = BLACK;
        snake[i].posX=65-i;
        snake[i].posY=65;
        snake[i].width =1;
@@ -310,6 +311,7 @@ void setup(){
   
   InitialScore();
   
+  initpowerups();
   VGA.setBackgroundColor(WHITE);
 
     
@@ -330,6 +332,7 @@ void loop(){
  // itoa(RED,buffers,10);
   //VGA.printtext(100,38,buffers,true );  
   
+     drawPowerUp();
      Rectangle r3 ={food.posX,food.posY,(food.posX+food.width),(food.posY+food.height) };
      Rectangle r4 ={snake[0].posX,snake[0].posY,(snake[0].posX+snake[0].width),(snake[0].posY+snake[0].height) };
      delay(10);
@@ -408,10 +411,21 @@ void moveSnake(){
   void drawSnake()
 {
     for(int i = 0; i<=currentSnakeSize; i++){
-      VGA.writeArea(snake[i].posX,snake[i].posY,snake[i].width,snake[i].height,snake[i].image);   
+      if(i<currentSnakeSize)
+      VGA.writeArea(snake[i].posX,snake[i].posY,snake[i].width,snake[i].height,snake[i].image); 
+    else if(i==currentSnakeSize)
+      VGA.putPixel(snake[i].posX,snake[i].posY,BLACK);
   }
 }
 
+  void drawPowerUp(){
+    for(int i = 0; i<3; i++){
+       VGA.writeArea(powerups[i].posX,powerups[i].posY,1,1,powerups[i].image); 
+    
+    }  
+  } 
+ 
+ 
   void growSnake(){
     currentSnakeSize++;
     snake[currentSnakeSize-1].image = Snake;
