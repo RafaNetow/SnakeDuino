@@ -184,6 +184,12 @@ void verifypowerup(color)
 		break;
 		
 		case:WHITE:
+		for(int i =5; i<8; i++)
+		{
+			powerup[i].image = BLUE;
+			powerup[i].posX = rand() % 156 + 2;
+			powerup[i].posY = rand() % 116 + 2;
+		}
 		break;
 		
 		case:ORANGE:
